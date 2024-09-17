@@ -1,5 +1,569 @@
+diff --git a/kernel/.clang-format b/kernel/.clang-format
+deleted file mode 100644
+index 10dc5a9a..00000000
+--- a/kernel/.clang-format
++++ /dev/null
+@@ -1,548 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0
+-#
+-# clang-format configuration file. Intended for clang-format >= 4.
+-#
+-# For more information, see:
+-#
+-#   Documentation/process/clang-format.rst
+-#   https://clang.llvm.org/docs/ClangFormat.html
+-#   https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+-#
+----
+-AccessModifierOffset: -4
+-AlignAfterOpenBracket: Align
+-AlignConsecutiveAssignments: false
+-AlignConsecutiveDeclarations: false
+-#AlignEscapedNewlines: Left # Unknown to clang-format-4.0
+-AlignOperands: true
+-AlignTrailingComments: false
+-AllowAllParametersOfDeclarationOnNextLine: false
+-AllowShortBlocksOnASingleLine: false
+-AllowShortCaseLabelsOnASingleLine: false
+-AllowShortFunctionsOnASingleLine: None
+-AllowShortIfStatementsOnASingleLine: false
+-AllowShortLoopsOnASingleLine: false
+-AlwaysBreakAfterDefinitionReturnType: None
+-AlwaysBreakAfterReturnType: None
+-AlwaysBreakBeforeMultilineStrings: false
+-AlwaysBreakTemplateDeclarations: false
+-BinPackArguments: true
+-BinPackParameters: true
+-BraceWrapping:
+-  AfterClass: false
+-  AfterControlStatement: false
+-  AfterEnum: false
+-  AfterFunction: true
+-  AfterNamespace: true
+-  AfterObjCDeclaration: false
+-  AfterStruct: false
+-  AfterUnion: false
+-  #AfterExternBlock: false # Unknown to clang-format-5.0
+-  BeforeCatch: false
+-  BeforeElse: false
+-  IndentBraces: false
+-  #SplitEmptyFunction: true # Unknown to clang-format-4.0
+-  #SplitEmptyRecord: true # Unknown to clang-format-4.0
+-  #SplitEmptyNamespace: true # Unknown to clang-format-4.0
+-BreakBeforeBinaryOperators: None
+-BreakBeforeBraces: Custom
+-#BreakBeforeInheritanceComma: false # Unknown to clang-format-4.0
+-BreakBeforeTernaryOperators: false
+-BreakConstructorInitializersBeforeComma: false
+-#BreakConstructorInitializers: BeforeComma # Unknown to clang-format-4.0
+-BreakAfterJavaFieldAnnotations: false
+-BreakStringLiterals: false
+-ColumnLimit: 80
+-CommentPragmas: '^ IWYU pragma:'
+-#CompactNamespaces: false # Unknown to clang-format-4.0
+-ConstructorInitializerAllOnOneLineOrOnePerLine: false
+-ConstructorInitializerIndentWidth: 8
+-ContinuationIndentWidth: 8
+-Cpp11BracedListStyle: false
+-DerivePointerAlignment: false
+-DisableFormat: false
+-ExperimentalAutoDetectBinPacking: false
+-#FixNamespaceComments: false # Unknown to clang-format-4.0
+-
+-# Taken from:
+-#   git grep -h '^#define [^[:space:]]*for_each[^[:space:]]*(' include/ \
+-#   | sed "s,^#define \([^[:space:]]*for_each[^[:space:]]*\)(.*$,  - '\1'," \
+-#   | sort | uniq
+-ForEachMacros:
+-  - 'apei_estatus_for_each_section'
+-  - 'ata_for_each_dev'
+-  - 'ata_for_each_link'
+-  - '__ata_qc_for_each'
+-  - 'ata_qc_for_each'
+-  - 'ata_qc_for_each_raw'
+-  - 'ata_qc_for_each_with_internal'
+-  - 'ax25_for_each'
+-  - 'ax25_uid_for_each'
+-  - '__bio_for_each_bvec'
+-  - 'bio_for_each_bvec'
+-  - 'bio_for_each_bvec_all'
+-  - 'bio_for_each_integrity_vec'
+-  - '__bio_for_each_segment'
+-  - 'bio_for_each_segment'
+-  - 'bio_for_each_segment_all'
+-  - 'bio_list_for_each'
+-  - 'bip_for_each_vec'
+-  - 'bitmap_for_each_clear_region'
+-  - 'bitmap_for_each_set_region'
+-  - 'blkg_for_each_descendant_post'
+-  - 'blkg_for_each_descendant_pre'
+-  - 'blk_queue_for_each_rl'
+-  - 'bond_for_each_slave'
+-  - 'bond_for_each_slave_rcu'
+-  - 'bpf_for_each_spilled_reg'
+-  - 'btree_for_each_safe128'
+-  - 'btree_for_each_safe32'
+-  - 'btree_for_each_safe64'
+-  - 'btree_for_each_safel'
+-  - 'card_for_each_dev'
+-  - 'cgroup_taskset_for_each'
+-  - 'cgroup_taskset_for_each_leader'
+-  - 'cpufreq_for_each_entry'
+-  - 'cpufreq_for_each_entry_idx'
+-  - 'cpufreq_for_each_valid_entry'
+-  - 'cpufreq_for_each_valid_entry_idx'
+-  - 'css_for_each_child'
+-  - 'css_for_each_descendant_post'
+-  - 'css_for_each_descendant_pre'
+-  - 'device_for_each_child_node'
+-  - 'dma_fence_chain_for_each'
+-  - 'do_for_each_ftrace_op'
+-  - 'drm_atomic_crtc_for_each_plane'
+-  - 'drm_atomic_crtc_state_for_each_plane'
+-  - 'drm_atomic_crtc_state_for_each_plane_state'
+-  - 'drm_atomic_for_each_plane_damage'
+-  - 'drm_client_for_each_connector_iter'
+-  - 'drm_client_for_each_modeset'
+-  - 'drm_connector_for_each_possible_encoder'
+-  - 'drm_for_each_bridge_in_chain'
+-  - 'drm_for_each_connector_iter'
+-  - 'drm_for_each_crtc'
+-  - 'drm_for_each_encoder'
+-  - 'drm_for_each_encoder_mask'
+-  - 'drm_for_each_fb'
+-  - 'drm_for_each_legacy_plane'
+-  - 'drm_for_each_plane'
+-  - 'drm_for_each_plane_mask'
+-  - 'drm_for_each_privobj'
+-  - 'drm_mm_for_each_hole'
+-  - 'drm_mm_for_each_node'
+-  - 'drm_mm_for_each_node_in_range'
+-  - 'drm_mm_for_each_node_safe'
+-  - 'flow_action_for_each'
+-  - 'for_each_active_dev_scope'
+-  - 'for_each_active_drhd_unit'
+-  - 'for_each_active_iommu'
+-  - 'for_each_aggr_pgid'
+-  - 'for_each_available_child_of_node'
+-  - 'for_each_bio'
+-  - 'for_each_board_func_rsrc'
+-  - 'for_each_bvec'
+-  - 'for_each_card_auxs'
+-  - 'for_each_card_auxs_safe'
+-  - 'for_each_card_components'
+-  - 'for_each_card_dapms'
+-  - 'for_each_card_pre_auxs'
+-  - 'for_each_card_prelinks'
+-  - 'for_each_card_rtds'
+-  - 'for_each_card_rtds_safe'
+-  - 'for_each_card_widgets'
+-  - 'for_each_card_widgets_safe'
+-  - 'for_each_cgroup_storage_type'
+-  - 'for_each_child_of_node'
+-  - 'for_each_clear_bit'
+-  - 'for_each_clear_bit_from'
+-  - 'for_each_cmsghdr'
+-  - 'for_each_compatible_node'
+-  - 'for_each_component_dais'
+-  - 'for_each_component_dais_safe'
+-  - 'for_each_comp_order'
+-  - 'for_each_console'
+-  - 'for_each_cpu'
+-  - 'for_each_cpu_and'
+-  - 'for_each_cpu_not'
+-  - 'for_each_cpu_wrap'
+-  - 'for_each_dapm_widgets'
+-  - 'for_each_dev_addr'
+-  - 'for_each_dev_scope'
+-  - 'for_each_displayid_db'
+-  - 'for_each_dma_cap_mask'
+-  - 'for_each_dpcm_be'
+-  - 'for_each_dpcm_be_rollback'
+-  - 'for_each_dpcm_be_safe'
+-  - 'for_each_dpcm_fe'
+-  - 'for_each_drhd_unit'
+-  - 'for_each_dss_dev'
+-  - 'for_each_efi_memory_desc'
+-  - 'for_each_efi_memory_desc_in_map'
+-  - 'for_each_element'
+-  - 'for_each_element_extid'
+-  - 'for_each_element_id'
+-  - 'for_each_endpoint_of_node'
+-  - 'for_each_evictable_lru'
+-  - 'for_each_fib6_node_rt_rcu'
+-  - 'for_each_fib6_walker_rt'
+-  - 'for_each_free_mem_pfn_range_in_zone'
+-  - 'for_each_free_mem_pfn_range_in_zone_from'
+-  - 'for_each_free_mem_range'
+-  - 'for_each_free_mem_range_reverse'
+-  - 'for_each_func_rsrc'
+-  - 'for_each_hstate'
+-  - 'for_each_if'
+-  - 'for_each_iommu'
+-  - 'for_each_ip_tunnel_rcu'
+-  - 'for_each_irq_nr'
+-  - 'for_each_link_codecs'
+-  - 'for_each_link_cpus'
+-  - 'for_each_link_platforms'
+-  - 'for_each_lru'
+-  - 'for_each_matching_node'
+-  - 'for_each_matching_node_and_match'
+-  - 'for_each_member'
+-  - 'for_each_mem_region'
+-  - 'for_each_memblock_type'
+-  - 'for_each_memcg_cache_index'
+-  - 'for_each_mem_pfn_range'
+-  - '__for_each_mem_range'
+-  - 'for_each_mem_range'
+-  - '__for_each_mem_range_rev'
+-  - 'for_each_mem_range_rev'
+-  - 'for_each_migratetype_order'
+-  - 'for_each_msi_entry'
+-  - 'for_each_msi_entry_safe'
+-  - 'for_each_net'
+-  - 'for_each_net_continue_reverse'
+-  - 'for_each_netdev'
+-  - 'for_each_netdev_continue'
+-  - 'for_each_netdev_continue_rcu'
+-  - 'for_each_netdev_continue_reverse'
+-  - 'for_each_netdev_feature'
+-  - 'for_each_netdev_in_bond_rcu'
+-  - 'for_each_netdev_rcu'
+-  - 'for_each_netdev_reverse'
+-  - 'for_each_netdev_safe'
+-  - 'for_each_net_rcu'
+-  - 'for_each_new_connector_in_state'
+-  - 'for_each_new_crtc_in_state'
+-  - 'for_each_new_mst_mgr_in_state'
+-  - 'for_each_new_plane_in_state'
+-  - 'for_each_new_private_obj_in_state'
+-  - 'for_each_node'
+-  - 'for_each_node_by_name'
+-  - 'for_each_node_by_type'
+-  - 'for_each_node_mask'
+-  - 'for_each_node_state'
+-  - 'for_each_node_with_cpus'
+-  - 'for_each_node_with_property'
+-  - 'for_each_nonreserved_multicast_dest_pgid'
+-  - 'for_each_of_allnodes'
+-  - 'for_each_of_allnodes_from'
+-  - 'for_each_of_cpu_node'
+-  - 'for_each_of_pci_range'
+-  - 'for_each_old_connector_in_state'
+-  - 'for_each_old_crtc_in_state'
+-  - 'for_each_old_mst_mgr_in_state'
+-  - 'for_each_oldnew_connector_in_state'
+-  - 'for_each_oldnew_crtc_in_state'
+-  - 'for_each_oldnew_mst_mgr_in_state'
+-  - 'for_each_oldnew_plane_in_state'
+-  - 'for_each_oldnew_plane_in_state_reverse'
+-  - 'for_each_oldnew_private_obj_in_state'
+-  - 'for_each_old_plane_in_state'
+-  - 'for_each_old_private_obj_in_state'
+-  - 'for_each_online_cpu'
+-  - 'for_each_online_node'
+-  - 'for_each_online_pgdat'
+-  - 'for_each_pci_bridge'
+-  - 'for_each_pci_dev'
+-  - 'for_each_pci_msi_entry'
+-  - 'for_each_pcm_streams'
+-  - 'for_each_physmem_range'
+-  - 'for_each_populated_zone'
+-  - 'for_each_possible_cpu'
+-  - 'for_each_present_cpu'
+-  - 'for_each_prime_number'
+-  - 'for_each_prime_number_from'
+-  - 'for_each_process'
+-  - 'for_each_process_thread'
+-  - 'for_each_property_of_node'
+-  - 'for_each_registered_fb'
+-  - 'for_each_requested_gpio'
+-  - 'for_each_requested_gpio_in_range'
+-  - 'for_each_reserved_mem_range'
+-  - 'for_each_reserved_mem_region'
+-  - 'for_each_rtd_codec_dais'
+-  - 'for_each_rtd_codec_dais_rollback'
+-  - 'for_each_rtd_components'
+-  - 'for_each_rtd_cpu_dais'
+-  - 'for_each_rtd_cpu_dais_rollback'
+-  - 'for_each_rtd_dais'
+-  - 'for_each_set_bit'
+-  - 'for_each_set_bit_from'
+-  - 'for_each_set_clump8'
+-  - 'for_each_sg'
+-  - 'for_each_sg_dma_page'
+-  - 'for_each_sg_page'
+-  - 'for_each_sgtable_dma_page'
+-  - 'for_each_sgtable_dma_sg'
+-  - 'for_each_sgtable_page'
+-  - 'for_each_sgtable_sg'
+-  - 'for_each_sibling_event'
+-  - 'for_each_subelement'
+-  - 'for_each_subelement_extid'
+-  - 'for_each_subelement_id'
+-  - '__for_each_thread'
+-  - 'for_each_thread'
+-  - 'for_each_unicast_dest_pgid'
+-  - 'for_each_wakeup_source'
+-  - 'for_each_zone'
+-  - 'for_each_zone_zonelist'
+-  - 'for_each_zone_zonelist_nodemask'
+-  - 'fwnode_for_each_available_child_node'
+-  - 'fwnode_for_each_child_node'
+-  - 'fwnode_graph_for_each_endpoint'
+-  - 'gadget_for_each_ep'
+-  - 'genradix_for_each'
+-  - 'genradix_for_each_from'
+-  - 'hash_for_each'
+-  - 'hash_for_each_possible'
+-  - 'hash_for_each_possible_rcu'
+-  - 'hash_for_each_possible_rcu_notrace'
+-  - 'hash_for_each_possible_safe'
+-  - 'hash_for_each_rcu'
+-  - 'hash_for_each_safe'
+-  - 'hctx_for_each_ctx'
+-  - 'hlist_bl_for_each_entry'
+-  - 'hlist_bl_for_each_entry_rcu'
+-  - 'hlist_bl_for_each_entry_safe'
+-  - 'hlist_for_each'
+-  - 'hlist_for_each_entry'
+-  - 'hlist_for_each_entry_continue'
+-  - 'hlist_for_each_entry_continue_rcu'
+-  - 'hlist_for_each_entry_continue_rcu_bh'
+-  - 'hlist_for_each_entry_from'
+-  - 'hlist_for_each_entry_from_rcu'
+-  - 'hlist_for_each_entry_rcu'
+-  - 'hlist_for_each_entry_rcu_bh'
+-  - 'hlist_for_each_entry_rcu_notrace'
+-  - 'hlist_for_each_entry_safe'
+-  - '__hlist_for_each_rcu'
+-  - 'hlist_for_each_safe'
+-  - 'hlist_nulls_for_each_entry'
+-  - 'hlist_nulls_for_each_entry_from'
+-  - 'hlist_nulls_for_each_entry_rcu'
+-  - 'hlist_nulls_for_each_entry_safe'
+-  - 'i3c_bus_for_each_i2cdev'
+-  - 'i3c_bus_for_each_i3cdev'
+-  - 'ide_host_for_each_port'
+-  - 'ide_port_for_each_dev'
+-  - 'ide_port_for_each_present_dev'
+-  - 'idr_for_each_entry'
+-  - 'idr_for_each_entry_continue'
+-  - 'idr_for_each_entry_continue_ul'
+-  - 'idr_for_each_entry_ul'
+-  - 'in_dev_for_each_ifa_rcu'
+-  - 'in_dev_for_each_ifa_rtnl'
+-  - 'inet_bind_bucket_for_each'
+-  - 'inet_lhash2_for_each_icsk_rcu'
+-  - 'key_for_each'
+-  - 'key_for_each_safe'
+-  - 'klp_for_each_func'
+-  - 'klp_for_each_func_safe'
+-  - 'klp_for_each_func_static'
+-  - 'klp_for_each_object'
+-  - 'klp_for_each_object_safe'
+-  - 'klp_for_each_object_static'
+-  - 'kunit_suite_for_each_test_case'
+-  - 'kvm_for_each_memslot'
+-  - 'kvm_for_each_vcpu'
+-  - 'list_for_each'
+-  - 'list_for_each_codec'
+-  - 'list_for_each_codec_safe'
+-  - 'list_for_each_continue'
+-  - 'list_for_each_entry'
+-  - 'list_for_each_entry_continue'
+-  - 'list_for_each_entry_continue_rcu'
+-  - 'list_for_each_entry_continue_reverse'
+-  - 'list_for_each_entry_from'
+-  - 'list_for_each_entry_from_rcu'
+-  - 'list_for_each_entry_from_reverse'
+-  - 'list_for_each_entry_lockless'
+-  - 'list_for_each_entry_rcu'
+-  - 'list_for_each_entry_reverse'
+-  - 'list_for_each_entry_safe'
+-  - 'list_for_each_entry_safe_continue'
+-  - 'list_for_each_entry_safe_from'
+-  - 'list_for_each_entry_safe_reverse'
+-  - 'list_for_each_prev'
+-  - 'list_for_each_prev_safe'
+-  - 'list_for_each_safe'
+-  - 'llist_for_each'
+-  - 'llist_for_each_entry'
+-  - 'llist_for_each_entry_safe'
+-  - 'llist_for_each_safe'
+-  - 'mci_for_each_dimm'
+-  - 'media_device_for_each_entity'
+-  - 'media_device_for_each_intf'
+-  - 'media_device_for_each_link'
+-  - 'media_device_for_each_pad'
+-  - 'nanddev_io_for_each_page'
+-  - 'netdev_for_each_lower_dev'
+-  - 'netdev_for_each_lower_private'
+-  - 'netdev_for_each_lower_private_rcu'
+-  - 'netdev_for_each_mc_addr'
+-  - 'netdev_for_each_uc_addr'
+-  - 'netdev_for_each_upper_dev_rcu'
+-  - 'netdev_hw_addr_list_for_each'
+-  - 'nft_rule_for_each_expr'
+-  - 'nla_for_each_attr'
+-  - 'nla_for_each_nested'
+-  - 'nlmsg_for_each_attr'
+-  - 'nlmsg_for_each_msg'
+-  - 'nr_neigh_for_each'
+-  - 'nr_neigh_for_each_safe'
+-  - 'nr_node_for_each'
+-  - 'nr_node_for_each_safe'
+-  - 'of_for_each_phandle'
+-  - 'of_property_for_each_string'
+-  - 'of_property_for_each_u32'
+-  - 'pci_bus_for_each_resource'
+-  - 'pcm_for_each_format'
+-  - 'ping_portaddr_for_each_entry'
+-  - 'plist_for_each'
+-  - 'plist_for_each_continue'
+-  - 'plist_for_each_entry'
+-  - 'plist_for_each_entry_continue'
+-  - 'plist_for_each_entry_safe'
+-  - 'plist_for_each_safe'
+-  - 'pnp_for_each_card'
+-  - 'pnp_for_each_dev'
+-  - 'protocol_for_each_card'
+-  - 'protocol_for_each_dev'
+-  - 'queue_for_each_hw_ctx'
+-  - 'radix_tree_for_each_slot'
+-  - 'radix_tree_for_each_tagged'
+-  - 'rbtree_postorder_for_each_entry_safe'
+-  - 'rdma_for_each_block'
+-  - 'rdma_for_each_port'
+-  - 'rdma_umem_for_each_dma_block'
+-  - 'resource_list_for_each_entry'
+-  - 'resource_list_for_each_entry_safe'
+-  - 'rhl_for_each_entry_rcu'
+-  - 'rhl_for_each_rcu'
+-  - 'rht_for_each'
+-  - 'rht_for_each_entry'
+-  - 'rht_for_each_entry_from'
+-  - 'rht_for_each_entry_rcu'
+-  - 'rht_for_each_entry_rcu_from'
+-  - 'rht_for_each_entry_safe'
+-  - 'rht_for_each_from'
+-  - 'rht_for_each_rcu'
+-  - 'rht_for_each_rcu_from'
+-  - '__rq_for_each_bio'
+-  - 'rq_for_each_bvec'
+-  - 'rq_for_each_segment'
+-  - 'scsi_for_each_prot_sg'
+-  - 'scsi_for_each_sg'
+-  - 'sctp_for_each_hentry'
+-  - 'sctp_skb_for_each'
+-  - 'shdma_for_each_chan'
+-  - '__shost_for_each_device'
+-  - 'shost_for_each_device'
+-  - 'sk_for_each'
+-  - 'sk_for_each_bound'
+-  - 'sk_for_each_entry_offset_rcu'
+-  - 'sk_for_each_from'
+-  - 'sk_for_each_rcu'
+-  - 'sk_for_each_safe'
+-  - 'sk_nulls_for_each'
+-  - 'sk_nulls_for_each_from'
+-  - 'sk_nulls_for_each_rcu'
+-  - 'snd_array_for_each'
+-  - 'snd_pcm_group_for_each_entry'
+-  - 'snd_soc_dapm_widget_for_each_path'
+-  - 'snd_soc_dapm_widget_for_each_path_safe'
+-  - 'snd_soc_dapm_widget_for_each_sink_path'
+-  - 'snd_soc_dapm_widget_for_each_source_path'
+-  - 'tb_property_for_each'
+-  - 'tcf_exts_for_each_action'
+-  - 'udp_portaddr_for_each_entry'
+-  - 'udp_portaddr_for_each_entry_rcu'
+-  - 'usb_hub_for_each_child'
+-  - 'v4l2_device_for_each_subdev'
+-  - 'v4l2_m2m_for_each_dst_buf'
+-  - 'v4l2_m2m_for_each_dst_buf_safe'
+-  - 'v4l2_m2m_for_each_src_buf'
+-  - 'v4l2_m2m_for_each_src_buf_safe'
+-  - 'virtio_device_for_each_vq'
+-  - 'while_for_each_ftrace_op'
+-  - 'xa_for_each'
+-  - 'xa_for_each_marked'
+-  - 'xa_for_each_range'
+-  - 'xa_for_each_start'
+-  - 'xas_for_each'
+-  - 'xas_for_each_conflict'
+-  - 'xas_for_each_marked'
+-  - 'xbc_array_for_each_value'
+-  - 'xbc_for_each_key_value'
+-  - 'xbc_node_for_each_array_value'
+-  - 'xbc_node_for_each_child'
+-  - 'xbc_node_for_each_key_value'
+-  - 'zorro_for_each_dev'
+-
+-#IncludeBlocks: Preserve # Unknown to clang-format-5.0
+-IncludeCategories:
+-  - Regex: '.*'
+-    Priority: 1
+-IncludeIsMainRegex: '(Test)?$'
+-IndentCaseLabels: false
+-#IndentPPDirectives: None # Unknown to clang-format-5.0
+-IndentWidth: 8
+-IndentWrappedFunctionNames: false
+-JavaScriptQuotes: Leave
+-JavaScriptWrapImports: true
+-KeepEmptyLinesAtTheStartOfBlocks: false
+-MacroBlockBegin: ''
+-MacroBlockEnd: ''
+-MaxEmptyLinesToKeep: 1
+-NamespaceIndentation: None
+-#ObjCBinPackProtocolList: Auto # Unknown to clang-format-5.0
+-ObjCBlockIndentWidth: 8
+-ObjCSpaceAfterProperty: true
+-ObjCSpaceBeforeProtocolList: true
+-
+-# Taken from git's rules
+-#PenaltyBreakAssignment: 10 # Unknown to clang-format-4.0
+-PenaltyBreakBeforeFirstCallParameter: 30
+-PenaltyBreakComment: 10
+-PenaltyBreakFirstLessLess: 0
+-PenaltyBreakString: 10
+-PenaltyExcessCharacter: 100
+-PenaltyReturnTypeOnItsOwnLine: 60
+-
+-PointerAlignment: Right
+-ReflowComments: false
+-SortIncludes: false
+-#SortUsingDeclarations: false # Unknown to clang-format-4.0
+-SpaceAfterCStyleCast: false
+-SpaceAfterTemplateKeyword: true
+-SpaceBeforeAssignmentOperators: true
+-#SpaceBeforeCtorInitializerColon: true # Unknown to clang-format-5.0
+-#SpaceBeforeInheritanceColon: true # Unknown to clang-format-5.0
+-SpaceBeforeParens: ControlStatements
+-#SpaceBeforeRangeBasedForLoopColon: true # Unknown to clang-format-5.0
+-SpaceInEmptyParentheses: false
+-SpacesBeforeTrailingComments: 1
+-SpacesInAngles: false
+-SpacesInContainerLiterals: false
+-SpacesInCStyleCastParentheses: false
+-SpacesInParentheses: false
+-SpacesInSquareBrackets: false
+-Standard: Cpp03
+-TabWidth: 8
+-UseTab: Always
+-...
+diff --git a/kernel/.clangd b/kernel/.clangd
+deleted file mode 100644
+index 5efbb7ef..00000000
+--- a/kernel/.clangd
++++ /dev/null
+@@ -1,4 +0,0 @@
+-Diagnostics:
+-  UnusedIncludes: Strict
+-  ClangTidy:
+-    Remove: bugprone-sizeof-expression
 diff --git a/kernel/Kconfig b/kernel/Kconfig
-index 67f177f4..27cc7b1e 100644
+index 67f177f4..932a410f 100644
 --- a/kernel/Kconfig
 +++ b/kernel/Kconfig
 @@ -16,4 +16,87 @@ config KSU_DEBUG
@@ -12,89 +576,89 @@ index 67f177f4..27cc7b1e 100644
 +    depends on KSU
 +    default y
 +    help
-+      Patch and Enable SUSFS to kernel with KernelSU
++      Patch and Enable SUSFS to kernel with KernelSU.
 +
 +config KSU_SUSFS_SUS_PATH
-+    bool "Enable to hide suspicious path"
++    bool "Enable to hide suspicious path (NOT recommended)"
 +    depends on KSU_SUSFS
 +    default y
 +    help
-+      Allow hiding the existence of user-defined file/directory from various system calls
++      - Allow hiding the user-defined path and all its sub-paths from various system calls.
++      - Effective on process with uid > 2000 only.
++      - Use with cautious as it may cause performance loss and will be vulnerable to side channel attacks,
++        just disable this feature if it doesn't work for you or you don't need it at all.
 +
 +config KSU_SUSFS_SUS_MOUNT
 +    bool "Enable to hide suspicious mounts"
 +    depends on KSU_SUSFS
 +    default y
 +    help
-+      Allow hiding the user-defined mount paths from /proc/self/[mounts|mountinfo|mountstat]
-+
-+config KSU_SUSFS_SUS_MOUNT_MNT_ID_REORDER
-+    bool "Enable to re-order mount id and parent mount id in mountinfo (experimental)"
-+    depends on KSU_SUSFS_SUS_MOUNT
-+    default n
-+    help
-+      - Enable this option will automatically and completely re-order the mount id and parent mount id in /proc/self/mountinfo
-+      - The actual mnt_id/parent_mnt_id is not changed in kernel, only reflects on /proc/self/mountinfo
-+      - You should not enable this if the mnt_id on your device is already not in order by default
-+      - Moreover, be careful this feature may cause unknown system crashes / random reboot / bootloop on different kernels or devices, further testing is needed.
-+      - Requires KSU_SUSFS_SUS_MOUNT to be ON
++      - Allow hiding the user-defined mount paths from /proc/self/[mounts|mountinfo|mountstat].
++      - Effective on all processes for hiding mount entries.
++      - The mnt_id, parent_mnt_id and mnt_group_id will be reordered as well in mountinfo while the actual values are remained unchanged in kernel,
++        and this reorder function will be effective on all processes spawned only by the zygote process.
 +
 +config KSU_SUSFS_SUS_KSTAT
 +    bool "Enable to spoof suspicious kstat"
 +    depends on KSU_SUSFS
 +    default y
 +    help
-+      Allow spoofing the kstat of user-defined file/directory
++      - Allow spoofing the kstat of user-defined file/directory.
++      - Effective on all processes.
 +
-+config KSU_SUSFS_SUS_MAPS
-+    bool "Enable to spoof suspicious maps"
++config KSU_SUSFS_SUS_OVERLAYFS
++    bool "Enable to automatically spoof kstat and kstatfs for overlayed files/directories"
 +    depends on KSU_SUSFS
 +    default y
 +    help
-+      Allow spoofing the user-defined mappings in /proc/self/[maps|smaps|map_files]
-+
-+config KSU_SUSFS_SUS_PROC_FD_LINK
-+    bool "Enable to spoof suspicous symbolic links (experimental)"
-+    depends on KSU_SUSFS
-+    default n
-+    help
-+      Allow spoofing the user-defined symbolic link in /proc/self/fd/
-+
-+config KSU_SUSFS_SUS_MEMFD
-+    bool "Enable to hide or spoof suspicous memfd (experimental)"
-+    depends on KSU_SUSFS
-+    default n
-+    help
-+      Allow preventing the user-defined memfd name from being created
++      - Automatically spoof the kstat and kstatfs for overlayed files/directories.
++      - No susfs command is needed in userspace.
++      - Effective on all processes.
 +
 +config KSU_SUSFS_TRY_UMOUNT
 +    bool "Enable to use ksu's try_umount"
 +    depends on KSU_SUSFS
 +    default y
 +    help
-+      Allow using ksu's umount to umount other user-defined mount paths prior to ksu's default umount paths
++      - Allow using ksu's umount to umount other user-defined mount paths prior to ksu's default umount paths.
++      - Effective on all NO-root-access-granted processes.
 +
 +config KSU_SUSFS_SPOOF_UNAME
 +    bool "Enable to spoof uname"
 +    depends on KSU_SUSFS
 +    default y
 +    help
-+      Allow spoofing the string returned by uname syscall to user-defined string
-+
++      - Allow spoofing the string returned by uname syscall to user-defined string.
++      - Effective on all processes.
++      
 +config KSU_SUSFS_ENABLE_LOG
 +    bool "Enable logging susfs log to kernel"
 +    depends on KSU_SUSFS
 +    default y
 +    help
-+      Allow logging susfs log to kernel, uncheck it to completely disable all susfs log
++      - Allow logging susfs log to kernel, uncheck it to completely disable all susfs log.
++
++config KSU_SUSFS_SUS_SU
++    bool "Enable SUS-SU in runtime temporarily (experimental)"
++    depends on KSU_SUSFS
++    default y
++    help
++      - Allow user to enable or disable core ksu kprobes hooks temporarily in runtime.
++      - When enabling sus_su, kprobes of ksu will be disabled, and a fifo driver will be created in /dev/[random_string].
++        (for first time only), then user needs to mount the 'sus_su' to /system/bin/su using overlayfs or whatever techniques,
++        and run 'su' to get root shell from the fifo driver. Or, refer to the method in service.sh from module template.
++      - When disabling sus_su, kprobes of ksu will be enabled again, and the fifo driver will be deleted.
++      - Only apps with root access granted by ksu manager are allowed to get root.
++      - Also overlayfs is required.
++
 +endmenu
 +
  endmenu
 diff --git a/kernel/Makefile b/kernel/Makefile
-index 66929756..d25f36c7 100644
+index 9fec3ef3..eb26e170 100644
 --- a/kernel/Makefile
 +++ b/kernel/Makefile
-@@ -66,4 +66,43 @@ endif
+@@ -51,4 +51,37 @@ ccflags-y += -DEXPECTED_HASH=\"$(KSU_EXPECTED_HASH)\"
  ccflags-y += -Wno-implicit-function-declaration -Wno-strict-prototypes -Wno-int-conversion -Wno-gcc-compat
  ccflags-y += -Wno-declaration-after-statement -Wno-unused-function
  
@@ -108,20 +672,11 @@ index 66929756..d25f36c7 100644
 +ifdef KSU_SUSFS_SUS_MOUNT
 +ccflags-y += -DKSU_SUSFS_SUS_MOUNT
 +endif
-+ifdef KSU_SUSFS_SUS_MOUNT_MNT_ID_REORDER
-+ccflags-y += -DKSU_SUSFS_SUS_MOUNT_MNT_ID_REORDER
-+endif
 +ifdef KSU_SUSFS_SUS_KSTAT
 +ccflags-y += -DKSU_SUSFS_SUS_KSTAT
 +endif
-+ifdef KSU_SUSFS_SUS_MAPS
-+ccflags-y += -DKSU_SUSFS_SUS_MAPS
-+endif
-+ifdef KSU_SUSFS_SUS_PROC_FD_LINK
-+ccflags-y += -DKSU_SUSFS_SUS_PROC_FD_LINK
-+endif
-+ifdef KSU_SUSFS_SUS_MEMFD
-+ccflags-y += -DKSU_SUSFS_SUS_MEMFD
++ifdef KSU_SUSFS_SUS_OVERLAYFS
++ccflags-y += -DKSU_SUSFS_SUS_OVERLAYFS
 +endif
 +ifdef KSU_SUSFS_TRY_UMOUNT
 +ccflags-y += -DKSU_SUSFS_TRY_UMOUNT
@@ -132,6 +687,9 @@ index 66929756..d25f36c7 100644
 +ifdef KSU_SUSFS_ENABLE_LOG
 +ccflags-y += -DKSU_SUSFS_ENABLE_LOG
 +endif
++ifdef KSU_SUSFS_SUS_SU
++ccflags-y += -DKSU_SUSFS_SUS_SU
++endif
 +else
 +$(info -- You have not integrate susfs in your kernel.)
 +$(info -- Read: https://gitlab.com/simonpunk/susfs4ksu)
@@ -139,29 +697,40 @@ index 66929756..d25f36c7 100644
 +
  # Keep a new line here!! Because someone may append config
 diff --git a/kernel/core_hook.c b/kernel/core_hook.c
-index 429ba330..f016db75 100644
+index b63ea0b1..56a1e660 100644
 --- a/kernel/core_hook.c
 +++ b/kernel/core_hook.c
-@@ -44,6 +44,10 @@
+@@ -44,6 +44,21 @@
  #include "throne_tracker.h"
  #include "kernel_compat.h"
  
 +#ifdef CONFIG_KSU_SUSFS
 +#include <linux/susfs.h>
++#ifdef CONFIG_KSU_SUSFS_SUS_SU
++#include "sucompat.h"
++#endif
++bool susfs_is_allow_su(void)
++{
++	if (is_manager()) {
++		// we are manager, allow!
++		return true;
++	}
++	return ksu_is_allow_uid(current_uid().val);
++}
 +#endif
 +
  static bool ksu_module_mounted = false;
  
  extern int handle_sepolicy(unsigned long arg3, void __user *arg4);
-@@ -375,6 +379,207 @@ int ksu_handle_prctl(int option, unsigned long arg2, unsigned long arg3,
+@@ -371,6 +386,164 @@ int ksu_handle_prctl(int option, unsigned long arg2, unsigned long arg3,
  		return 0;
  	}
  
 +#ifdef CONFIG_KSU_SUSFS
-+	if (current_uid().val == 0) {
-+		int error = 0;
++	if (current_uid_val == 0) {
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
 +		if (arg2 == CMD_SUSFS_ADD_SUS_PATH) {
++			int error = 0;
 +			if (!ksu_access_ok((void __user*)arg3, sizeof(struct st_susfs_sus_path))) {
 +				pr_err("susfs: CMD_SUSFS_ADD_SUS_PATH -> arg3 is not accessible\n");
 +				return 0;
@@ -172,12 +741,14 @@ index 429ba330..f016db75 100644
 +			}
 +			error = susfs_add_sus_path((struct st_susfs_sus_path __user*)arg3);
 +			pr_info("susfs: CMD_SUSFS_ADD_SUS_PATH -> ret: %d\n", error);
-+			copy_to_user((void __user*)arg5, &error, sizeof(error));
++			if (copy_to_user((void __user*)arg5, &error, sizeof(error)))
++				pr_info("susfs: copy_to_user() failed\n");
 +			return 0;
 +		}
 +#endif //#ifdef CONFIG_KSU_SUSFS_SUS_PATH
 +#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
 +		if (arg2 == CMD_SUSFS_ADD_SUS_MOUNT) {
++			int error = 0;
 +			if (!ksu_access_ok((void __user*)arg3, sizeof(struct st_susfs_sus_mount))) {
 +				pr_err("susfs: CMD_SUSFS_ADD_SUS_MOUNT -> arg3 is not accessible\n");
 +				return 0;
@@ -188,12 +759,14 @@ index 429ba330..f016db75 100644
 +			}
 +			error = susfs_add_sus_mount((struct st_susfs_sus_mount __user*)arg3);
 +			pr_info("susfs: CMD_SUSFS_ADD_SUS_MOUNT -> ret: %d\n", error);
-+			copy_to_user((void __user*)arg5, &error, sizeof(error));
++			if (copy_to_user((void __user*)arg5, &error, sizeof(error)))
++				pr_info("susfs: copy_to_user() failed\n");
 +			return 0;
 +		}
 +#endif //#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
 +#ifdef CONFIG_KSU_SUSFS_SUS_KSTAT
 +		if (arg2 == CMD_SUSFS_ADD_SUS_KSTAT) {
++			int error = 0;
 +			if (!ksu_access_ok((void __user*)arg3, sizeof(struct st_susfs_sus_kstat))) {
 +				pr_err("susfs: CMD_SUSFS_ADD_SUS_KSTAT -> arg3 is not accessible\n");
 +				return 0;
@@ -204,10 +777,12 @@ index 429ba330..f016db75 100644
 +			}
 +			error = susfs_add_sus_kstat((struct st_susfs_sus_kstat __user*)arg3);
 +			pr_info("susfs: CMD_SUSFS_ADD_SUS_KSTAT -> ret: %d\n", error);
-+			copy_to_user((void __user*)arg5, &error, sizeof(error));
++			if (copy_to_user((void __user*)arg5, &error, sizeof(error)))
++				pr_info("susfs: copy_to_user() failed\n");
 +			return 0;
 +		}
 +		if (arg2 == CMD_SUSFS_UPDATE_SUS_KSTAT) {
++			int error = 0;
 +			if (!ksu_access_ok((void __user*)arg3, sizeof(struct st_susfs_sus_kstat))) {
 +				pr_err("susfs: CMD_SUSFS_UPDATE_SUS_KSTAT -> arg3 is not accessible\n");
 +				return 0;
@@ -218,10 +793,12 @@ index 429ba330..f016db75 100644
 +			}
 +			error = susfs_update_sus_kstat((struct st_susfs_sus_kstat __user*)arg3);
 +			pr_info("susfs: CMD_SUSFS_UPDATE_SUS_KSTAT -> ret: %d\n", error);
-+			copy_to_user((void __user*)arg5, &error, sizeof(error));
++			if (copy_to_user((void __user*)arg5, &error, sizeof(error)))
++				pr_info("susfs: copy_to_user() failed\n");
 +			return 0;
 +		}
 +		if (arg2 == CMD_SUSFS_ADD_SUS_KSTAT_STATICALLY) {
++			int error = 0;
 +			if (!ksu_access_ok((void __user*)arg3, sizeof(struct st_susfs_sus_kstat))) {
 +				pr_err("susfs: CMD_SUSFS_ADD_SUS_KSTAT_STATICALLY -> arg3 is not accessible\n");
 +				return 0;
@@ -232,88 +809,14 @@ index 429ba330..f016db75 100644
 +			}
 +			error = susfs_add_sus_kstat((struct st_susfs_sus_kstat __user*)arg3);
 +			pr_info("susfs: CMD_SUSFS_ADD_SUS_KSTAT_STATICALLY -> ret: %d\n", error);
-+			copy_to_user((void __user*)arg5, &error, sizeof(error));
++			if (copy_to_user((void __user*)arg5, &error, sizeof(error)))
++				pr_info("susfs: copy_to_user() failed\n");
 +			return 0;
 +        }
 +#endif //#ifdef CONFIG_KSU_SUSFS_SUS_KSTAT
-+#ifdef CONFIG_KSU_SUSFS_SUS_MAPS
-+		if (arg2 == CMD_SUSFS_ADD_SUS_MAPS) {
-+			if (!ksu_access_ok((void __user*)arg3, sizeof(struct st_susfs_sus_maps))) {
-+				pr_err("susfs: CMD_SUSFS_ADD_SUS_MAPS -> arg3 is not accessible\n");
-+				return 0;
-+			}
-+			if (!ksu_access_ok((void __user*)arg5, sizeof(error))) {
-+				pr_err("susfs: CMD_SUSFS_ADD_SUS_MAPS -> arg5 is not accessible\n");
-+				return 0;
-+			}
-+			error = susfs_add_sus_maps((struct st_susfs_sus_maps __user*)arg3);
-+			pr_info("susfs: CMD_SUSFS_ADD_SUS_MAPS -> ret: %d\n", error);
-+			copy_to_user((void __user*)arg5, &error, sizeof(error));
-+			return 0;
-+		}
-+		if (arg2 == CMD_SUSFS_UPDATE_SUS_MAPS) {
-+			if (!ksu_access_ok((void __user*)arg3, sizeof(struct st_susfs_sus_maps))) {
-+				pr_err("susfs: CMD_SUSFS_UPDATE_SUS_MAPS -> arg3 is not accessible\n");
-+				return 0;
-+			}
-+			if (!ksu_access_ok((void __user*)arg5, sizeof(error))) {
-+				pr_err("susfs: CMD_SUSFS_UPDATE_SUS_MAPS -> arg5 is not accessible\n");
-+				return 0;
-+			}
-+			error = susfs_update_sus_maps((struct st_susfs_sus_maps __user*)arg3);
-+			pr_info("susfs: CMD_SUSFS_UPDATE_SUS_MAPS -> ret: %d\n", error);
-+			copy_to_user((void __user*)arg5, &error, sizeof(error));
-+			return 0;
-+		}
-+		if (arg2 == CMD_SUSFS_ADD_SUS_MAPS_STATICALLY) {
-+			if (!ksu_access_ok((void __user*)arg3, sizeof(struct st_susfs_sus_maps))) {
-+				pr_err("susfs: CMD_SUSFS_ADD_SUS_MAPS_STATICALLY -> arg3 is not accessible\n");
-+				return 0;
-+			}
-+			if (!ksu_access_ok((void __user*)arg5, sizeof(error))) {
-+				pr_err("susfs: CMD_SUSFS_ADD_SUS_MAPS_STATICALLY -> arg5 is not accessible\n");
-+				return 0;
-+			}
-+			error = susfs_add_sus_maps((struct st_susfs_sus_maps __user*)arg3);
-+			pr_info("susfs: CMD_SUSFS_ADD_SUS_MAPS_STATICALLY -> ret: %d\n", error);
-+			copy_to_user((void __user*)arg5, &error, sizeof(error));
-+			return 0;
-+		}
-+#endif //#ifdef CONFIG_KSU_SUSFS_SUS_MAPS
-+#ifdef CONFIG_KSU_SUSFS_SUS_PROC_FD_LINK
-+		if (arg2 == CMD_SUSFS_ADD_SUS_PROC_FD_LINK) {
-+			if (!ksu_access_ok((void __user*)arg3, sizeof(struct st_susfs_sus_proc_fd_link))) {
-+				pr_err("susfs: CMD_SUSFS_ADD_SUS_PROC_FD_LINK -> arg3 is not accessible\n");
-+				return 0;
-+			}
-+			if (!ksu_access_ok((void __user*)arg5, sizeof(error))) {
-+				pr_err("susfs: CMD_SUSFS_ADD_SUS_PROC_FD_LINK -> arg5 is not accessible\n");
-+				return 0;
-+			}
-+			error = susfs_add_sus_proc_fd_link((struct st_susfs_sus_proc_fd_link __user*)arg3);
-+			pr_info("susfs: CMD_SUSFS_ADD_SUS_PROC_FD_LINK -> ret: %d\n", error);
-+			copy_to_user((void __user*)arg5, &error, sizeof(error));
-+			return 0;
-+		}
-+#endif //#ifdef CONFIG_KSU_SUSFS_SUS_PROC_FD_LINK
-+#ifdef CONFIG_KSU_SUSFS_SUS_MEMFD
-+		if (arg2 == CMD_SUSFS_ADD_SUS_MEMFD) {
-+			if (!ksu_access_ok((void __user*)arg3, sizeof(struct st_susfs_sus_memfd))) {
-+				pr_err("susfs: CMD_SUSFS_ADD_SUS_MEMFD -> arg3 is not accessible\n");
-+				return 0;
-+			}
-+			if (!ksu_access_ok((void __user*)arg5, sizeof(error))) {
-+				pr_err("susfs: CMD_SUSFS_ADD_SUS_MEMFD -> arg5 is not accessible\n");
-+				return 0;
-+			}
-+			error = susfs_add_sus_memfd((struct st_susfs_sus_memfd __user*)arg3);
-+			pr_info("susfs: CMD_SUSFS_ADD_SUS_MEMFD -> ret: %d\n", error);
-+			copy_to_user((void __user*)arg5, &error, sizeof(error));
-+			return 0;
-+		}
-+#endif //#ifdef CONFIG_KSU_SUSFS_SUS_MEMFD
 +#ifdef CONFIG_KSU_SUSFS_TRY_UMOUNT
 +		if (arg2 == CMD_SUSFS_ADD_TRY_UMOUNT) {
++			int error = 0;
 +			if (!ksu_access_ok((void __user*)arg3, sizeof(struct st_susfs_try_umount))) {
 +				pr_err("susfs: CMD_SUSFS_ADD_TRY_UMOUNT -> arg3 is not accessible\n");
 +				return 0;
@@ -324,12 +827,14 @@ index 429ba330..f016db75 100644
 +			}
 +			error = susfs_add_try_umount((struct st_susfs_try_umount __user*)arg3);
 +			pr_info("susfs: CMD_SUSFS_ADD_TRY_UMOUNT -> ret: %d\n", error);
-+			copy_to_user((void __user*)arg5, &error, sizeof(error));
++			if (copy_to_user((void __user*)arg5, &error, sizeof(error)))
++				pr_info("susfs: copy_to_user() failed\n");
 +			return 0;
 +		}
 +#endif //#ifdef CONFIG_KSU_SUSFS_TRY_UMOUNT
 +#ifdef CONFIG_KSU_SUSFS_SPOOF_UNAME
 +		if (arg2 == CMD_SUSFS_SET_UNAME) {
++			int error = 0;
 +			if (!ksu_access_ok((void __user*)arg3, sizeof(struct st_susfs_uname))) {
 +				pr_err("susfs: CMD_SUSFS_SET_UNAME -> arg3 is not accessible\n");
 +				return 0;
@@ -340,32 +845,92 @@ index 429ba330..f016db75 100644
 +			}
 +			error = susfs_set_uname((struct st_susfs_uname __user*)arg3);
 +			pr_info("susfs: CMD_SUSFS_SET_UNAME -> ret: %d\n", error);
-+			copy_to_user((void __user*)arg5, &error, sizeof(error));
++			if (copy_to_user((void __user*)arg5, &error, sizeof(error)))
++				pr_info("susfs: copy_to_user() failed\n");
 +			return 0;
 +		}
 +#endif //#ifdef CONFIG_KSU_SUSFS_SPOOF_UNAME
 +#ifdef CONFIG_KSU_SUSFS_ENABLE_LOG
 +		if (arg2 == CMD_SUSFS_ENABLE_LOG) {
++			int error = 0;
 +			if (arg3 != 0 && arg3 != 1) {
 +				pr_err("susfs: CMD_SUSFS_ENABLE_LOG -> arg3 can only be 0 or 1\n");
 +				return 0;
 +			}
 +			susfs_set_log(arg3);
-+			copy_to_user((void __user*)arg5, &error, sizeof(error));
++			if (copy_to_user((void __user*)arg5, &error, sizeof(error)))
++				pr_info("susfs: copy_to_user() failed\n");
 +			return 0;
 +		}
 +#endif //#ifdef CONFIG_KSU_SUSFS_ENABLE_LOG
++#ifdef CONFIG_KSU_SUSFS_SUS_SU
++		if (arg2 == CMD_SUSFS_SUS_SU) {
++			int error = 0;
++			if (!ksu_access_ok((void __user*)arg3, sizeof(struct st_sus_su))) {
++				pr_err("susfs: CMD_SUSFS_SUS_SU -> arg3 is not accessible\n");
++				return 0;
++			}
++			if (!ksu_access_ok((void __user*)arg5, sizeof(error))) {
++				pr_err("susfs: CMD_SUSFS_SUS_SU -> arg5 is not accessible\n");
++				return 0;
++			}
++			error = susfs_sus_su((struct st_sus_su __user*)arg3);
++			pr_info("susfs: CMD_SUSFS_SUS_SU -> ret: %d\n", error);
++			if (copy_to_user((void __user*)arg5, &error, sizeof(error)))
++				pr_info("susfs: copy_to_user() failed\n");
++			return 0;
++		}
++#endif //#ifdef CONFIG_KSU_SUSFS_SUS_SU
 +	}
 +#endif //#ifdef CONFIG_KSU_SUSFS
 +
  	// all other cmds are for 'root manager'
  	if (!from_manager) {
  		return 0;
-@@ -535,6 +740,11 @@ int ksu_handle_setuid(struct cred *new, const struct cred *old)
+@@ -453,7 +626,11 @@ static void ksu_umount_mnt(struct path *path, int flags)
+ 	}
+ }
+ 
++#ifdef CONFIG_KSU_SUSFS
++void try_umount(const char *mnt, bool check_mnt, int flags)
++#else
+ static void try_umount(const char *mnt, bool check_mnt, int flags)
++#endif
+ {
+ 	struct path path;
+ 	int err = kern_path(mnt, 0, &path);
+@@ -493,6 +670,25 @@ int ksu_handle_setuid(struct cred *new, const struct cred *old)
+ 		return 0;
+ 	}
+ 
++#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
++	// check for newly created zygote process
++	if (unlikely(new_uid.val == 0) && is_zygote(new->security)) {
++		// set the NS_IS_ZYGOTGE flag on zygote process for later use
++		// This is for sus mount code to identify if the user mnt namespace is zygote
++		if (!(new->user_ns->android_kabi_reserved1 & NS_KABI1_IS_ZYGOTE)) {
++			new->user_ns->android_kabi_reserved1 |= NS_KABI1_IS_ZYGOTE;
++			pr_info("susfs: Found new zygote process, writing flag NS_IS_ZYGOTGE to its namespace\n");
++		}
++	}
++	// check for newly created system_server process spwaned by zygote, and run try_umount on it 
++	if (unlikely(new_uid.val == 1000)) {
++		if (is_zygote(old->security)) {
++			pr_info("susfs: Found system_server process, running try_umount()\n");
++			goto bypass_orig_flow;
++		}
++	}
++#endif
++
+ 	if (!is_appuid(new_uid) || is_unsupported_uid(new_uid.val)) {
+ 		// pr_info("handle setuid ignore non application or isolated uid: %d\n", new_uid.val);
+ 		return 0;
+@@ -526,6 +722,12 @@ int ksu_handle_setuid(struct cred *new, const struct cred *old)
  		current->pid);
  #endif
  
 +#ifdef CONFIG_KSU_SUSFS_TRY_UMOUNT
++bypass_orig_flow:
 +	// susfs come first, and lastly umount by ksu, make sure umount in reversed order
 +	susfs_try_umount(new_uid.val);
 +#endif
@@ -373,11 +938,26 @@ index 429ba330..f016db75 100644
  	// fixme: use `collect_mounts` and `iterate_mount` to iterate all mountpoint and
  	// filter the mountpoint whose target is `/data/adb`
  	try_umount("/system", true, 0);
+diff --git a/kernel/core_hook.h b/kernel/core_hook.h
+index 616951e8..e80ce4a9 100644
+--- a/kernel/core_hook.h
++++ b/kernel/core_hook.h
+@@ -6,4 +6,10 @@
+ void __init ksu_core_init(void);
+ void ksu_core_exit(void);
+ 
++#ifdef CONFIG_KSU_SUSFS
++bool susfs_is_allow_su(void);
++void escape_to_root(void);
++void try_umount(const char *mnt, bool check_mnt, int flags);
++#endif
++
+ #endif
 diff --git a/kernel/kernel_compat.c b/kernel/kernel_compat.c
-index b242bc63..0ec3df62 100644
+index d4ee546d..a11f2628 100644
 --- a/kernel/kernel_compat.c
 +++ b/kernel/kernel_compat.c
-@@ -77,6 +77,16 @@ void ksu_android_ns_fs_check()
+@@ -48,6 +48,16 @@ void ksu_android_ns_fs_check()
  	task_unlock(current);
  }
  
@@ -393,13 +973,13 @@ index b242bc63..0ec3df62 100644
 +
  struct file *ksu_filp_open_compat(const char *filename, int flags, umode_t mode)
  {
- #if LINUX_VERSION_CODE < KERNEL_VERSION(4, 10, 0) || defined(CONFIG_IS_HW_HISI)
+ 	// switch mnt_ns even if current is not wq_worker, to ensure what we open is the correct file in android mnt_ns, rather than user created mnt_ns
 diff --git a/kernel/kernel_compat.h b/kernel/kernel_compat.h
-index ba998185..34050e73 100644
+index 4bcfbf38..5d5fcf35 100644
 --- a/kernel/kernel_compat.h
 +++ b/kernel/kernel_compat.h
-@@ -29,6 +29,7 @@ extern struct key *init_session_keyring;
- #endif
+@@ -25,6 +25,7 @@ extern long ksu_strncpy_from_user_nofault(char *dst,
+ 					  long count);
  
  extern void ksu_android_ns_fs_check();
 +extern int ksu_access_ok(const void *addr, unsigned long size);
@@ -407,7 +987,7 @@ index ba998185..34050e73 100644
  					 umode_t mode);
  extern ssize_t ksu_kernel_read_compat(struct file *p, void *buf, size_t count,
 diff --git a/kernel/ksu.c b/kernel/ksu.c
-index 3639edc2..4a9cfaba 100644
+index d517c3b5..621a1d2e 100644
 --- a/kernel/ksu.c
 +++ b/kernel/ksu.c
 @@ -11,6 +11,10 @@
@@ -433,10 +1013,10 @@ index 3639edc2..4a9cfaba 100644
  
  	ksu_workqueue = alloc_ordered_workqueue("kernelsu_work_queue", 0);
 diff --git a/kernel/selinux/rules.c b/kernel/selinux/rules.c
-index 1ba6d853..7b24203c 100644
+index b4e6eae0..bde27292 100644
 --- a/kernel/selinux/rules.c
 +++ b/kernel/selinux/rules.c
-@@ -134,6 +134,11 @@ void apply_kernelsu_rules()
+@@ -122,6 +122,11 @@ void apply_kernelsu_rules()
      ksu_allow(db, "system_server", KERNEL_SU_DOMAIN, "process", "getpgid");
      ksu_allow(db, "system_server", KERNEL_SU_DOMAIN, "process", "sigkill");
  
@@ -448,3 +1028,29 @@ index 1ba6d853..7b24203c 100644
  	rcu_read_unlock();
  }
  
+diff --git a/kernel/sucompat.c b/kernel/sucompat.c
+index 966cbf8f..8bed6f31 100644
+--- a/kernel/sucompat.c
++++ b/kernel/sucompat.c
+@@ -278,3 +278,21 @@ void ksu_sucompat_exit()
+ 	unregister_kprobe(&pts_unix98_lookup_kp);
+ #endif
+ }
++
++
++#ifdef CONFIG_KSU_SUSFS_SUS_SU
++void ksu_susfs_disable_sus_su(void) {
++	disable_kprobe(&execve_kp);
++	disable_kprobe(&newfstatat_kp);
++	disable_kprobe(&faccessat_kp);
++	//disable_kprobe(&pts_unix98_lookup_kp);
++}
++
++void ksu_susfs_enable_sus_su(void) {
++	enable_kprobe(&execve_kp);
++	enable_kprobe(&newfstatat_kp);
++	enable_kprobe(&faccessat_kp);
++	//enable_kprobe(&pts_unix98_lookup_kp);
++}
++#endif
++
