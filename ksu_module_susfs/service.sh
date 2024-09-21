@@ -29,6 +29,7 @@ enable_sus_su(){
 }
 
 ## Enable sus_su ##
+## Uncomment this if you are using kprobe hooks ksu, make sure CONFIG_KSU_SUSFS_SUS_SU config is enabled when compiling kernel ##
 #enable_sus_su
 
 ## Disable susfs kernel log ##

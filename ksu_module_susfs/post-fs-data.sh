@@ -54,14 +54,14 @@ EOF
 # Please be reminded that susfs's try_umount takes precedence of ksu's try_umount #
 cat <<EOF >/dev/null
 # for /system/etc/hosts #
-${SUSFS_BIN} add_try_umount /system/etc/hosts '1'
+${SUSFS_BIN} add_try_umount /system/etc/hosts 1
 # for lsposed, choose those that show up in your mountinfo, no need to add them all #
-${SUSFS_BIN} add_try_umount /system/apex/com.android.art/bin/dex2oat
-${SUSFS_BIN} add_try_umount /system/apex/com.android.art/bin/dex2oat32
-${SUSFS_BIN} add_try_umount /system/apex/com.android.art/bin/dex2oat64
-${SUSFS_BIN} add_try_umount /apex/com.android.art/bin/dex2oat
-${SUSFS_BIN} add_try_umount /apex/com.android.art/bin/dex2oat32
-${SUSFS_BIN} add_try_umount /apex/com.android.art/bin/dex2oat64
+${SUSFS_BIN} add_try_umount /system/apex/com.android.art/bin/dex2oat 1
+${SUSFS_BIN} add_try_umount /system/apex/com.android.art/bin/dex2oat32 1
+${SUSFS_BIN} add_try_umount /system/apex/com.android.art/bin/dex2oat64 1
+${SUSFS_BIN} add_try_umount /apex/com.android.art/bin/dex2oat 1
+${SUSFS_BIN} add_try_umount /apex/com.android.art/bin/dex2oat32 1
+${SUSFS_BIN} add_try_umount /apex/com.android.art/bin/dex2oat64 1
 EOF
 
 #### Spoof the stat of file/directory dynamically ####
