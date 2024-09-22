@@ -58,7 +58,7 @@ index dc3c911d4b92..31fcf1e0da42 100644
  		return inode->i_op->update_time(inode, time, flags);
  	return generic_update_time(inode, time, flags);
 diff --git a/fs/namei.c b/fs/namei.c
-index a3922d96fac9..0342a06c773f 100644
+index a3922d96fac9..efd6f320722f 100644
 --- a/fs/namei.c
 +++ b/fs/namei.c
 @@ -1047,6 +1047,12 @@ static inline int may_follow_link(struct nameidata *nd, const struct inode *inod
@@ -100,61 +100,52 @@ index a3922d96fac9..0342a06c773f 100644
  	if ((!sysctl_protected_fifos && S_ISFIFO(inode->i_mode)) ||
  	    (!sysctl_protected_regular && S_ISREG(inode->i_mode)) ||
  	    likely(!(dir_mode & S_ISVTX)) ||
-@@ -1549,6 +1567,22 @@ struct dentry *lookup_one_qstr_excl(const struct qstr *name,
+@@ -1548,6 +1566,9 @@ struct dentry *lookup_one_qstr_excl(const struct qstr *name,
+ 	struct dentry *dentry = lookup_dcache(name, base, flags);
  	struct dentry *old;
  	struct inode *dir = base->d_inode;
- 
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
 +	int error;
-+	if (dentry) {
-+		if (dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
-+			if ((flags & (LOOKUP_CREATE | LOOKUP_EXCL))) {
-+				error = inode_permission(dir->i_sb->s_user_ns, dir, MAY_WRITE | MAY_EXEC);
-+				if (error) {
-+					return ERR_PTR(error);
-+				}
-+				return ERR_PTR(-ENOENT);
-+			}
-+			return ERR_PTR(-ENOENT);
-+		}
-+		return dentry;
-+	}
 +#endif
+ 
  	if (dentry)
  		return dentry;
- 
-@@ -1565,6 +1599,18 @@ struct dentry *lookup_one_qstr_excl(const struct qstr *name,
+@@ -1565,6 +1586,21 @@ struct dentry *lookup_one_qstr_excl(const struct qstr *name,
  		dput(dentry);
  		dentry = old;
  	}
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-+	if (dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++	if (!IS_ERR(dentry) && dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
 +		if ((flags & (LOOKUP_CREATE | LOOKUP_EXCL))) {
 +			error = inode_permission(dir->i_sb->s_user_ns, dir, MAY_WRITE | MAY_EXEC);
 +			if (error) {
++				dput(dentry);
 +				return ERR_PTR(error);
 +			}
++			dput(dentry);
 +			return ERR_PTR(-ENOENT);
 +		}
++		dput(dentry);
 +		return ERR_PTR(-ENOENT);
 +	}
 +#endif
  	return dentry;
  }
  EXPORT_SYMBOL(lookup_one_qstr_excl);
-@@ -1667,6 +1713,11 @@ static struct dentry *__lookup_slow(const struct qstr *name,
+@@ -1667,6 +1703,12 @@ static struct dentry *__lookup_slow(const struct qstr *name,
  			dentry = old;
  		}
  	}
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
 +	if (!IS_ERR(dentry) && dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++		dput(dentry);
 +		return ERR_PTR(-ENOENT);
 +	}
 +#endif
  	return dentry;
  }
  
-@@ -2317,6 +2368,12 @@ static int link_path_walk(const char *name, struct nameidata *nd)
+@@ -2317,6 +2359,12 @@ static int link_path_walk(const char *name, struct nameidata *nd)
  			}
  			return -ENOTDIR;
  		}
@@ -167,7 +158,7 @@ index a3922d96fac9..0342a06c773f 100644
  	}
  }
  
-@@ -2491,6 +2548,11 @@ int filename_lookup(int dfd, struct filename *name, unsigned flags,
+@@ -2491,6 +2539,11 @@ int filename_lookup(int dfd, struct filename *name, unsigned flags,
  		audit_inode(name, path->dentry,
  			    flags & LOOKUP_MOUNTPOINT ? AUDIT_INODE_NOEVAL : 0);
  	restore_nameidata();
@@ -179,7 +170,7 @@ index a3922d96fac9..0342a06c773f 100644
  	return retval;
  }
  
-@@ -2945,6 +3007,12 @@ static int may_delete(struct user_namespace *mnt_userns, struct inode *dir,
+@@ -2945,6 +2998,12 @@ static int may_delete(struct user_namespace *mnt_userns, struct inode *dir,
  	if (IS_APPEND(dir))
  		return -EPERM;
  
@@ -192,7 +183,7 @@ index a3922d96fac9..0342a06c773f 100644
  	if (check_sticky(mnt_userns, dir, inode) || IS_APPEND(inode) ||
  	    IS_IMMUTABLE(inode) || IS_SWAPFILE(inode) ||
  	    HAS_UNMAPPED_ID(mnt_userns, inode))
-@@ -2975,7 +3043,21 @@ static int may_delete(struct user_namespace *mnt_userns, struct inode *dir,
+@@ -2975,7 +3034,21 @@ static int may_delete(struct user_namespace *mnt_userns, struct inode *dir,
  static inline int may_create(struct user_namespace *mnt_userns,
  			     struct inode *dir, struct dentry *child)
  {
@@ -214,7 +205,7 @@ index a3922d96fac9..0342a06c773f 100644
  	if (child->d_inode)
  		return -EEXIST;
  	if (IS_DEADDIR(dir))
-@@ -3203,6 +3285,12 @@ static int may_open(struct user_namespace *mnt_userns, const struct path *path,
+@@ -3203,6 +3276,12 @@ static int may_open(struct user_namespace *mnt_userns, const struct path *path,
  	if (!inode)
  		return -ENOENT;
  
@@ -227,7 +218,7 @@ index a3922d96fac9..0342a06c773f 100644
  	switch (inode->i_mode & S_IFMT) {
  	case S_IFLNK:
  		return -ELOOP;
-@@ -3281,7 +3369,21 @@ static int may_o_create(struct user_namespace *mnt_userns,
+@@ -3281,7 +3360,21 @@ static int may_o_create(struct user_namespace *mnt_userns,
  			const struct path *dir, struct dentry *dentry,
  			umode_t mode)
  {
@@ -249,39 +240,43 @@ index a3922d96fac9..0342a06c773f 100644
  	if (error)
  		return error;
  
-@@ -3402,6 +3504,11 @@ static struct dentry *lookup_open(struct nameidata *nd, struct file *file,
+@@ -3402,6 +3495,12 @@ static struct dentry *lookup_open(struct nameidata *nd, struct file *file,
  	}
  	if (dentry->d_inode) {
  		/* Cached positive dentry: will open in f_op->open */
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
 +		if (unlikely(dentry->d_inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++			dput(dentry);
 +			return ERR_PTR(-ENOENT);
 +		}
 +#endif
  		return dentry;
  	}
  
-@@ -3433,6 +3540,14 @@ static struct dentry *lookup_open(struct nameidata *nd, struct file *file,
+@@ -3433,6 +3532,16 @@ static struct dentry *lookup_open(struct nameidata *nd, struct file *file,
  		dentry = atomic_open(nd, dentry, file, open_flag, mode);
  		if (unlikely(create_error) && dentry == ERR_PTR(-ENOENT))
  			dentry = ERR_PTR(create_error);
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
 +		if (!IS_ERR(dentry) && dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
 +			if (create_error) {
++				dput(dentry);
 +				return ERR_PTR(create_error);
 +			}
++			dput(dentry);
 +			return ERR_PTR(-ENOENT);
 +		}
 +#endif
  		return dentry;
  	}
  
-@@ -3447,6 +3562,11 @@ static struct dentry *lookup_open(struct nameidata *nd, struct file *file,
+@@ -3447,6 +3556,12 @@ static struct dentry *lookup_open(struct nameidata *nd, struct file *file,
  			}
  			dput(dentry);
  			dentry = res;
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
 +			if (dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++				dput(dentry);
 +				return ERR_PTR(-ENOENT);
 +			}
 +#endif
