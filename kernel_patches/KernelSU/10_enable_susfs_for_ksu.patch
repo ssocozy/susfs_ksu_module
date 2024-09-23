@@ -468,6 +468,21 @@ index d517c3b5..621a1d2e 100644
  	ksu_core_init();
  
  	ksu_workqueue = alloc_ordered_workqueue("kernelsu_work_queue", 0);
+diff --git a/kernel/ksud.c b/kernel/ksud.c
+index 98fee107..3b636087 100644
+--- a/kernel/ksud.c
++++ b/kernel/ksud.c
+@@ -57,6 +57,10 @@ bool ksu_execveat_hook __read_mostly = true;
+ bool ksu_input_hook __read_mostly = true;
+ #endif
+ 
++#ifdef CONFIG_KSU_SUSFS_SUS_SU
++bool ksu_devpts_hook = false;
++#endif
++
+ u32 ksu_devpts_sid;
+ 
+ void on_post_fs_data(void)
 diff --git a/kernel/selinux/rules.c b/kernel/selinux/rules.c
 index b4e6eae0..bde27292 100644
 --- a/kernel/selinux/rules.c
@@ -485,28 +500,32 @@ index b4e6eae0..bde27292 100644
  }
  
 diff --git a/kernel/sucompat.c b/kernel/sucompat.c
-index 966cbf8f..8bed6f31 100644
+index 966cbf8f..c23fcf99 100644
 --- a/kernel/sucompat.c
 +++ b/kernel/sucompat.c
-@@ -278,3 +278,21 @@ void ksu_sucompat_exit()
+@@ -278,3 +278,25 @@ void ksu_sucompat_exit()
  	unregister_kprobe(&pts_unix98_lookup_kp);
  #endif
  }
 +
 +
 +#ifdef CONFIG_KSU_SUSFS_SUS_SU
-+void ksu_susfs_disable_sus_su(void) {
-+	disable_kprobe(&execve_kp);
-+	disable_kprobe(&newfstatat_kp);
-+	disable_kprobe(&faccessat_kp);
-+	//disable_kprobe(&pts_unix98_lookup_kp);
-+}
++extern bool ksu_devpts_hook;
 +
-+void ksu_susfs_enable_sus_su(void) {
++void ksu_susfs_disable_sus_su(void) {
 +	enable_kprobe(&execve_kp);
 +	enable_kprobe(&newfstatat_kp);
 +	enable_kprobe(&faccessat_kp);
-+	//enable_kprobe(&pts_unix98_lookup_kp);
++	enable_kprobe(&pts_unix98_lookup_kp);
++	ksu_devpts_hook = false;
++}
++
++void ksu_susfs_enable_sus_su(void) {
++	disable_kprobe(&execve_kp);
++	disable_kprobe(&newfstatat_kp);
++	disable_kprobe(&faccessat_kp);
++	disable_kprobe(&pts_unix98_lookup_kp);
++	ksu_devpts_hook = true;
 +}
 +#endif
 +

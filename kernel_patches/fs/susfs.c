@@ -459,7 +459,7 @@ int susfs_sus_su(struct st_sus_su* __user user_info) {
 
 	if (info.enabled) {
 		sus_su_fifo_init(&info.maj_dev_num, info.drv_path);
-		ksu_susfs_disable_sus_su();
+		ksu_susfs_enable_sus_su();
 		if (info.maj_dev_num < 0) {
 			SUSFS_LOGI("failed to get proper info.maj_dev_num: %d\n", info.maj_dev_num);
 			return 1;
@@ -470,7 +470,7 @@ int susfs_sus_su(struct st_sus_su* __user user_info) {
 			SUSFS_LOGE("copy_to_user() failed\n");
 		return 0;
 	} else {
-		ksu_susfs_enable_sus_su();
+		ksu_susfs_disable_sus_su();
 		sus_su_fifo_exit(&info.maj_dev_num, info.drv_path);
 		if (info.maj_dev_num != -1) {
 			SUSFS_LOGI("failed to set proper info.maj_dev_num to '-1'\n");
