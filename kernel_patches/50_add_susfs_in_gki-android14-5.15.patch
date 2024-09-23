@@ -13,27 +13,28 @@ index e4adb988218c..06e7ab304425 100644
  obj-y +=	buffer.o direct-io.o mpage.o
  else
 diff --git a/fs/dcache.c b/fs/dcache.c
-index 75897359b754..1d7ca6896583 100644
+index 75897359b754..ca40776a1678 100644
 --- a/fs/dcache.c
 +++ b/fs/dcache.c
-@@ -2343,6 +2343,11 @@ struct dentry *__d_lookup_rcu(const struct dentry *parent,
+@@ -2343,6 +2343,12 @@ struct dentry *__d_lookup_rcu(const struct dentry *parent,
  				continue;
  			if (dentry_cmp(dentry, str, hashlen_len(hashlen)) != 0)
  				continue;
++
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-+			if (dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++			if (dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_cred()->user->android_kabi_reserved1 & 16777216)) {
 +				continue;
 +			}
 +#endif
  		}
  		*seqp = seq;
  		return dentry;
-@@ -2426,6 +2431,12 @@ struct dentry *__d_lookup(const struct dentry *parent, const struct qstr *name)
+@@ -2426,6 +2432,12 @@ struct dentry *__d_lookup(const struct dentry *parent, const struct qstr *name)
  		if (dentry->d_name.hash != hash)
  			continue;
  
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-+		if (dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++		if (dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_cred()->user->android_kabi_reserved1 & 16777216)) {
 +			continue;
 +		}
 +#endif
@@ -58,7 +59,7 @@ index dc3c911d4b92..31fcf1e0da42 100644
  		return inode->i_op->update_time(inode, time, flags);
  	return generic_update_time(inode, time, flags);
 diff --git a/fs/namei.c b/fs/namei.c
-index a3922d96fac9..efd6f320722f 100644
+index a3922d96fac9..27a2c8092878 100644
 --- a/fs/namei.c
 +++ b/fs/namei.c
 @@ -1047,6 +1047,12 @@ static inline int may_follow_link(struct nameidata *nd, const struct inode *inod
@@ -66,7 +67,7 @@ index a3922d96fac9..efd6f320722f 100644
  	kuid_t i_uid;
  
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-+	if (nd->inode && unlikely(nd->inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++	if (nd->inode && unlikely(nd->inode->i_state & 16777216) && likely(current_cred()->user->android_kabi_reserved1 & 16777216)) {
 +		return -ENOENT;
 +	}
 +#endif
@@ -79,7 +80,7 @@ index a3922d96fac9..efd6f320722f 100644
  	struct inode *inode = link->dentry->d_inode;
  
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-+	if (inode && unlikely(inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++	if (inode && unlikely(inode->i_state & 16777216) && likely(current_cred()->user->android_kabi_reserved1 & 16777216)) {
 +		return -ENOENT;
 +	}
 +#endif
@@ -92,7 +93,7 @@ index a3922d96fac9..efd6f320722f 100644
  	kuid_t dir_uid = nd->dir_uid;
  
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-+	if (unlikely(inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++	if (unlikely(inode->i_state & 16777216) && likely(current_cred()->user->android_kabi_reserved1 & 16777216)) {
 +		return -ENOENT;
 +	}
 +#endif
@@ -115,7 +116,7 @@ index a3922d96fac9..efd6f320722f 100644
  		dentry = old;
  	}
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-+	if (!IS_ERR(dentry) && dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++	if (!IS_ERR(dentry) && dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_cred()->user->android_kabi_reserved1 & 16777216)) {
 +		if ((flags & (LOOKUP_CREATE | LOOKUP_EXCL))) {
 +			error = inode_permission(dir->i_sb->s_user_ns, dir, MAY_WRITE | MAY_EXEC);
 +			if (error) {
@@ -137,7 +138,7 @@ index a3922d96fac9..efd6f320722f 100644
  		}
  	}
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-+	if (!IS_ERR(dentry) && dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++	if (!IS_ERR(dentry) && dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_cred()->user->android_kabi_reserved1 & 16777216)) {
 +		dput(dentry);
 +		return ERR_PTR(-ENOENT);
 +	}
@@ -151,7 +152,7 @@ index a3922d96fac9..efd6f320722f 100644
  		}
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
 +		// we deal with sus sub path here
-+		if (nd->inode && unlikely(nd->inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++		if (nd->inode && unlikely(nd->inode->i_state & 16777216) && likely(current_cred()->user->android_kabi_reserved1 & 16777216)) {
 +			return 0;
 +		}
 +#endif
@@ -163,7 +164,7 @@ index a3922d96fac9..efd6f320722f 100644
  			    flags & LOOKUP_MOUNTPOINT ? AUDIT_INODE_NOEVAL : 0);
  	restore_nameidata();
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-+	if (!retval && path->dentry->d_inode && unlikely(path->dentry->d_inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++	if (!retval && path->dentry->d_inode && unlikely(path->dentry->d_inode->i_state & 16777216) && likely(current_cred()->user->android_kabi_reserved1 & 16777216)) {
 +		return -ENOENT;
 +	}
 +#endif
@@ -175,7 +176,7 @@ index a3922d96fac9..efd6f320722f 100644
  		return -EPERM;
  
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-+	if (unlikely(inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++	if (unlikely(inode->i_state & 16777216) && likely(current_cred()->user->android_kabi_reserved1 & 16777216)) {
 +		return -ENOENT;
 +	}
 +#endif
@@ -193,7 +194,7 @@ index a3922d96fac9..efd6f320722f 100644
  	audit_inode_child(dir, child, AUDIT_TYPE_CHILD_CREATE);
 +
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-+	if (child->d_inode && unlikely(child->d_inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++	if (child->d_inode && unlikely(child->d_inode->i_state & 16777216) && likely(current_cred()->user->android_kabi_reserved1 & 16777216)) {
 +		error = inode_permission(mnt_userns, dir, MAY_WRITE | MAY_EXEC);
 +		if (error) {
 +			return error;
@@ -210,7 +211,7 @@ index a3922d96fac9..efd6f320722f 100644
  		return -ENOENT;
  
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-+	if (unlikely(inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++	if (unlikely(inode->i_state & 16777216) && likely(current_cred()->user->android_kabi_reserved1 & 16777216)) {
 +		return -ENOENT;
 +	}
 +#endif
@@ -225,7 +226,7 @@ index a3922d96fac9..efd6f320722f 100644
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
 +	int error;
 +
-+	if (dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++	if (dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_cred()->user->android_kabi_reserved1 & 16777216)) {
 +		error = inode_permission(mnt_userns, dir->dentry->d_inode,
 +				 MAY_WRITE | MAY_EXEC);
 +		if (error) {
@@ -245,7 +246,7 @@ index a3922d96fac9..efd6f320722f 100644
  	if (dentry->d_inode) {
  		/* Cached positive dentry: will open in f_op->open */
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-+		if (unlikely(dentry->d_inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++		if (unlikely(dentry->d_inode->i_state & 16777216) && likely(current_cred()->user->android_kabi_reserved1 & 16777216)) {
 +			dput(dentry);
 +			return ERR_PTR(-ENOENT);
 +		}
@@ -258,7 +259,7 @@ index a3922d96fac9..efd6f320722f 100644
  		if (unlikely(create_error) && dentry == ERR_PTR(-ENOENT))
  			dentry = ERR_PTR(create_error);
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-+		if (!IS_ERR(dentry) && dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++		if (!IS_ERR(dentry) && dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_cred()->user->android_kabi_reserved1 & 16777216)) {
 +			if (create_error) {
 +				dput(dentry);
 +				return ERR_PTR(create_error);
@@ -275,7 +276,7 @@ index a3922d96fac9..efd6f320722f 100644
  			dput(dentry);
  			dentry = res;
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-+			if (dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_uid().val > 2000)) {
++			if (dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_cred()->user->android_kabi_reserved1 & 16777216)) {
 +				dput(dentry);
 +				return ERR_PTR(-ENOENT);
 +			}
@@ -550,7 +551,7 @@ index 49650e54d2f8..96aa6e973175 100644
  	if (sb->s_op->show_devname) {
  		seq_puts(m, "device ");
 diff --git a/fs/readdir.c b/fs/readdir.c
-index 09e8ed7d4161..cdb113daf9f1 100644
+index 09e8ed7d4161..8ef19c8c2537 100644
 --- a/fs/readdir.c
 +++ b/fs/readdir.c
 @@ -24,6 +24,10 @@
@@ -569,7 +570,7 @@ index 09e8ed7d4161..cdb113daf9f1 100644
  	int prev_reclen;
  
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-+	if (likely(current_uid().val > 2000) && susfs_sus_ino_for_filldir64(ino)) {
++	if (likely(current_cred()->user->android_kabi_reserved1 & 16777216) && susfs_sus_ino_for_filldir64(ino)) {
 +		return 0;
 +	}
 +#endif

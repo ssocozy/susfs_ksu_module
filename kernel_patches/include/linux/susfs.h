@@ -29,7 +29,8 @@
  * vfsmount->mnt.android_kabi_reserved2 => fake mnt group id (peer id)
  * mnt_namespace->user_namespace->android_kabi_reserved1 => storing flag 'NS_KABI' ;
  * mnt_namespace->user_namespace->android_kabi_reserved2 => last fake mnt id after copy_mnt_ns();
-*/
+ * task_struct->cred->user_struct->android_kabi_reserved1 => storing flag 'USER_STRUCT_SUS_'
+ */
 
 #define INODE_STATE_SUS_PATH 16777216 // 1 << 24
 #define INODE_STATE_SUS_MOUNT 33554432 // 1 << 25
@@ -37,6 +38,8 @@
 
 #define NS_KABI1_IS_ZYGOTE 1 // 1 << 0
 #define NS_KABI2_IS_COPY_MNT_NS_DONE 8 // 1 << 3
+
+#define USER_STRUCT_SUS_PATH 16777216 // 1 << 24
 
 /*********/
 /* MACRO */
