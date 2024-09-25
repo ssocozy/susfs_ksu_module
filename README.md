@@ -73,3 +73,8 @@
 
 ## Telegram ##
 - @simonpunk
+
+
+## Buy me a coffee ##
+- PayPal: kingjeffkimo@yahoo.com.tw
+- BTC: bc1qgkwvsfln02463zpjf7z6tds8xnpeykggtgk4kw
