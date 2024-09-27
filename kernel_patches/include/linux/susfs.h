@@ -25,10 +25,15 @@
 
 /*
  * inode->i_state => storing flag 'INODE_STATE_'
- * mount->vfsmount->android_kabi_reserved1 => fake mnt id
- * mount->vfsmount->android_kabi_reserved2 => fake mnt group id (peer id)
+ * inode->android_kabi_reserved1 => storing fake i_ino
+ * inode->android_kabi_reserved2 => storing fake i_dev
+ * inode->super_block->android_kabi_reserved1 => storing fake i_nlink
+ * inode->super_block->android_kabi_reserved2 => storing fake i_size
+ * inode->super_block->android_kabi_reserved3 => storing fake i_blocks
+ * mount->vfsmount->android_kabi_reserved1 => storing fake mnt id
+ * mount->vfsmount->android_kabi_reserved2 => storing fake mnt group id (peer id)
  * mnt_namespace->user_namespace->android_kabi_reserved1 => storing flag 'NS_KABI'
- * mnt_namespace->user_namespace->android_kabi_reserved2 => last fake mnt id after copy_mnt_ns();
+ * mnt_namespace->user_namespace->android_kabi_reserved2 => storing last fake mnt id after copy_mnt_ns();
  * task_struct->cred->user_struct->android_kabi_reserved1 => storing flag 'USER_STRUCT_SUS_'
  */
 
