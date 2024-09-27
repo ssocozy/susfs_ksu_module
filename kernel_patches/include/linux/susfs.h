@@ -25,9 +25,9 @@
 
 /*
  * inode->i_state => storing flag 'INODE_STATE_'
- * vfsmount->android_kabi_reserved1 => fake mnt id
- * vfsmount->mnt.android_kabi_reserved2 => fake mnt group id (peer id)
- * mnt_namespace->user_namespace->android_kabi_reserved1 => storing flag 'NS_KABI' ;
+ * mount->vfsmount->android_kabi_reserved1 => fake mnt id
+ * mount->vfsmount->android_kabi_reserved2 => fake mnt group id (peer id)
+ * mnt_namespace->user_namespace->android_kabi_reserved1 => storing flag 'NS_KABI'
  * mnt_namespace->user_namespace->android_kabi_reserved2 => last fake mnt id after copy_mnt_ns();
  * task_struct->cred->user_struct->android_kabi_reserved1 => storing flag 'USER_STRUCT_SUS_'
  */
@@ -46,9 +46,6 @@
 /*********/
 #define getname_safe(name) (name == NULL ? ERR_PTR(-EINVAL) : getname(name))
 #define putname_safe(name) (IS_ERR(name) ? NULL : putname(name))
-
-#define uid_matches_suspicious_path() (current_uid().val > 10000)
-#define uid_matches_proc_need_to_reorder_mnt_id() (current_uid().val >= 10000)
 
 /**********/
 /* STRUCT */
