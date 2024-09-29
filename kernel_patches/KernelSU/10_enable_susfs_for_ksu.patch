@@ -133,7 +133,7 @@ index 9fec3ef3..eb26e170 100644
 +
  # Keep a new line here!! Because someone may append config
 diff --git a/kernel/core_hook.c b/kernel/core_hook.c
-index b63ea0b1..72d1d76d 100644
+index b63ea0b1..abbc457c 100644
 --- a/kernel/core_hook.c
 +++ b/kernel/core_hook.c
 @@ -44,6 +44,21 @@
@@ -369,7 +369,7 @@ index b63ea0b1..72d1d76d 100644
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
 +	else {
 +		// if new uid is not root granted, then drop a payload to inidicate that sus_path will be effective on this uid
-+		new->user->android_kabi_reserved1 |= 16777216;
++		new->user->android_kabi_reserved1 |= USER_STRUCT_NON_ROOT_USER_APP_PROFILE;
 +	}
 +#endif
  
