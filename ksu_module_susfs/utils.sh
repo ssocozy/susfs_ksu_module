@@ -14,8 +14,8 @@ susfs_clone_perm() {
 	chcon $4 ${TO}
 }
 
-## susfs_patch_props <target_prop_name> <spoofed_prop_name> <spoofed_prop_value>
-susfs_patch_props() {
+## susfs_hexpatch_props <target_prop_name> <spoofed_prop_name> <spoofed_prop_value>
+susfs_hexpatch_props() {
 	TARGET_PROP_NAME=$1
 	SPOOFED_PROP_NAME=$2
 	SPOOFED_PROP_VALUE=$3
