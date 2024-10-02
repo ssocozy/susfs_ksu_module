@@ -13,14 +13,13 @@ index e4adb988218c..06e7ab304425 100644
  obj-y +=	buffer.o direct-io.o mpage.o
  else
 diff --git a/fs/dcache.c b/fs/dcache.c
-index 75897359b754..ca40776a1678 100644
+index 93d416dbb709..f93435a6a65c 100644
 --- a/fs/dcache.c
 +++ b/fs/dcache.c
-@@ -2343,6 +2343,12 @@ struct dentry *__d_lookup_rcu(const struct dentry *parent,
+@@ -2343,6 +2343,11 @@ struct dentry *__d_lookup_rcu(const struct dentry *parent,
  				continue;
  			if (dentry_cmp(dentry, str, hashlen_len(hashlen)) != 0)
  				continue;
-+
 +#ifdef CONFIG_KSU_SUSFS_SUS_PATH
 +			if (dentry->d_inode && unlikely(dentry->d_inode->i_state & 16777216) && likely(current_cred()->user->android_kabi_reserved1 & 16777216)) {
 +				continue;
@@ -29,7 +28,7 @@ index 75897359b754..ca40776a1678 100644
  		}
  		*seqp = seq;
  		return dentry;
-@@ -2426,6 +2432,12 @@ struct dentry *__d_lookup(const struct dentry *parent, const struct qstr *name)
+@@ -2426,6 +2431,12 @@ struct dentry *__d_lookup(const struct dentry *parent, const struct qstr *name)
  		if (dentry->d_name.hash != hash)
  			continue;
  
@@ -100,7 +99,7 @@ index dc3c911d4b92..5103272153be 100644
  		return inode->i_op->update_time(inode, time, flags);
  	return generic_update_time(inode, time, flags);
 diff --git a/fs/namei.c b/fs/namei.c
-index a3922d96fac9..27a2c8092878 100644
+index 8ad2a5329b94..0951f5915c18 100644
 --- a/fs/namei.c
 +++ b/fs/namei.c
 @@ -1047,6 +1047,12 @@ static inline int may_follow_link(struct nameidata *nd, const struct inode *inod
@@ -326,10 +325,10 @@ index a3922d96fac9..27a2c8092878 100644
  	}
  
 diff --git a/fs/namespace.c b/fs/namespace.c
-index 2bef741f2092..2208394241e2 100644
+index 63cc1e776d3c..79d2d04b880d 100644
 --- a/fs/namespace.c
 +++ b/fs/namespace.c
-@@ -988,6 +988,14 @@ struct vfsmount *vfs_create_mount(struct fs_context *fc)
+@@ -988,6 +988,15 @@ struct vfsmount *vfs_create_mount(struct fs_context *fc)
  	if (!initial_idmapping(fs_userns))
  		mnt->mnt.mnt_userns = get_user_ns(fs_userns);
  
@@ -341,10 +340,11 @@ index 2bef741f2092..2208394241e2 100644
 +	// Seems no need to reorder the mnt group id for mounts after copy_mnt_ns();
 +#endif
 +
++
  	lock_mount_hash();
  	list_add_tail(&mnt->mnt_instance, &mnt->mnt.mnt_sb->s_mounts);
  	unlock_mount_hash();
-@@ -1084,6 +1092,14 @@ static struct mount *clone_mnt(struct mount *old, struct dentry *root,
+@@ -1084,6 +1093,14 @@ static struct mount *clone_mnt(struct mount *old, struct dentry *root,
  	mnt->mnt.mnt_root = dget(root);
  	mnt->mnt_mountpoint = mnt->mnt.mnt_root;
  	mnt->mnt_parent = mnt;
@@ -359,7 +359,7 @@ index 2bef741f2092..2208394241e2 100644
  	lock_mount_hash();
  	list_add_tail(&mnt->mnt_instance, &sb->s_mounts);
  	unlock_mount_hash();
-@@ -3006,6 +3022,13 @@ static int do_new_mount(struct path *path, const char *fstype, int sb_flags,
+@@ -3006,6 +3023,14 @@ static int do_new_mount(struct path *path, const char *fstype, int sb_flags,
  	if (!err)
  		err = do_new_mount_fc(fc, path, mnt_flags);
  
@@ -370,10 +370,11 @@ index 2bef741f2092..2208394241e2 100644
 +		}
 +	}
 +#endif
++
  	put_fs_context(fc);
  	return err;
  }
-@@ -3423,6 +3446,11 @@ struct mnt_namespace *copy_mnt_ns(unsigned long flags, struct mnt_namespace *ns,
+@@ -3423,6 +3448,11 @@ struct mnt_namespace *copy_mnt_ns(unsigned long flags, struct mnt_namespace *ns,
  	struct mount *old;
  	struct mount *new;
  	int copy_flags;
@@ -385,7 +386,7 @@ index 2bef741f2092..2208394241e2 100644
  
  	BUG_ON(!ns);
  
-@@ -3483,6 +3511,36 @@ struct mnt_namespace *copy_mnt_ns(unsigned long flags, struct mnt_namespace *ns,
+@@ -3483,6 +3513,36 @@ struct mnt_namespace *copy_mnt_ns(unsigned long flags, struct mnt_namespace *ns,
  		while (p->mnt.mnt_root != q->mnt.mnt_root)
  			p = next_mnt(p, old);
  	}
@@ -393,8 +394,8 @@ index 2bef741f2092..2208394241e2 100644
 +	// q->mnt.android_kabi_reserved1 -> fake mnt id
 +	// q->mnt.android_kabi_reserved2 -> fake mnt group id (peer id)
 +	// new_ns->user_ns->android_kabi_reserved1 -> mnt ns flag for sus_mount
-+	// new_ns->user_ns->android_kabi_reserved2 -> to record last valid fake mnt id, \
-+	//    for the use of app process adding/cloning new mounts after its namespace is cloned by zygote
++	// new_ns->user_ns->android_kabi_reserved2 -> to record last valid fake mnt id,
++	//     for the use of app process adding/cloning new mounts after its namespace is cloned by zygote
 +
 +	// Here We are only interested in processes of which original mnt namespace belongs to zygote 
 +	// Also we just make use of existing 'p' and 'q' mount pointer, no need to delcare extra mount pointer
@@ -414,8 +415,8 @@ index 2bef741f2092..2208394241e2 100644
 +			}
 +		}
 +	}
-+	// lastly we set the flag NS_IS_COPY_MNT_NS_DONE and assign the last fake mnt id to \
-+	// new_ns->user_ns->android_kabi_reserved2 for later use
++	// lastly we set the flag NS_IS_COPY_MNT_NS_DONE and assign the last fake mnt id to
++	//     new_ns->user_ns->android_kabi_reserved2 for later use
 +	new_ns->user_ns->android_kabi_reserved1 |= 8;
 +	new_ns->user_ns->android_kabi_reserved2 = first_entry_mnt_id;
 +#endif
@@ -423,7 +424,7 @@ index 2bef741f2092..2208394241e2 100644
  
  	if (rootmnt)
 diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-index de80b0d8cf2a..6f2509550231 100644
+index 1ae1199b9fd2..893f8b799860 100644
 --- a/fs/overlayfs/inode.c
 +++ b/fs/overlayfs/inode.c
 @@ -165,6 +165,21 @@ int ovl_getattr(struct user_namespace *mnt_userns, const struct path *path,
@@ -619,7 +620,7 @@ index 09e8ed7d4161..8ef19c8c2537 100644
  	if (unlikely(buf->error))
  		return buf->error;
 diff --git a/fs/stat.c b/fs/stat.c
-index 3e5be67027ef..b7cff22ed2ad 100644
+index 357a1db410ec..3b86c20760d9 100644
 --- a/fs/stat.c
 +++ b/fs/stat.c
 @@ -43,6 +43,24 @@
@@ -648,7 +649,7 @@ index 3e5be67027ef..b7cff22ed2ad 100644
  	stat->ino = inode->i_ino;
  	stat->mode = inode->i_mode;
 diff --git a/fs/statfs.c b/fs/statfs.c
-index 96d1c3edf289..277f66d7bcf3 100644
+index 2a37f9f3dba1..69067b5fe3dc 100644
 --- a/fs/statfs.c
 +++ b/fs/statfs.c
 @@ -109,6 +109,22 @@ int user_statfs(const char __user *pathname, struct kstatfs *st)
@@ -688,7 +689,7 @@ index 96d1c3edf289..277f66d7bcf3 100644
  }
  
 diff --git a/kernel/sys.c b/kernel/sys.c
-index 4b2ebf822f00..c8f802d1a32b 100644
+index 9702653c50e5..82d703d8a5e4 100644
 --- a/kernel/sys.c
 +++ b/kernel/sys.c
 @@ -77,6 +77,10 @@
@@ -702,7 +703,7 @@ index 4b2ebf822f00..c8f802d1a32b 100644
  #ifndef SET_UNALIGN_CTL
  # define SET_UNALIGN_CTL(a, b)	(-EINVAL)
  #endif
-@@ -1302,7 +1306,14 @@ SYSCALL_DEFINE1(newuname, struct new_utsname __user *, name)
+@@ -1296,7 +1300,14 @@ SYSCALL_DEFINE1(newuname, struct new_utsname __user *, name)
  	struct new_utsname tmp;
  
  	down_read(&uts_sem);
