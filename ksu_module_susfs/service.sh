@@ -33,4 +33,10 @@ enable_sus_su(){
 #enable_sus_su
 
 ## Disable susfs kernel log ##
-#${SUSFS_BIN} enable_log 0
+${SUSFS_BIN} enable_log 0
+
+## Hide for Systemless host for ksu ##
+# right timing for hide mount of /system/etc so it doesn't trigger futile hide
+sleep 1s
+${SUSFS_BIN} add_sus_mount /system/etc
+${SUSFS_BIN} add_try_umount /system/etc 1

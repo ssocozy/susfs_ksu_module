@@ -22,4 +22,3 @@ chmod 644 ${MODPATH}/post-fs-data.sh ${MODPATH}/service.sh ${MODPATH}/uninstall.
 rm -rf ${MODPATH}/tools
 rm ${MODPATH}/customize.sh ${MODPATH}/README.md
 
-
