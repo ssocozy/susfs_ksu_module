@@ -12,8 +12,9 @@ ${SUSFS_BIN} add_sus_path /vendor/bin/install-recovery.sh
 ${SUSFS_BIN} add_sus_path /system/bin/install-recovery.sh
 
 #KernelSU
-# ${SUSFS_BIN} add_sus_mount /data/adb/modules
+${SUSFS_BIN} add_sus_mount /data/adb
 ${SUSFS_BIN} add_sus_mount /debug_ramdisk
+
 
 #LSPosed
 ${SUSFS_BIN} add_sus_mount /data/adb/modules/zygisk_lsposed/bin/dex2oat
